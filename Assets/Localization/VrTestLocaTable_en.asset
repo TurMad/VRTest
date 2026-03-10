@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: VrTestLocaTable_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 48043965703012243a14c9a3bd22d269, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 205610548404224
+    m_Localized: Text in eng
+    m_Metadata:
+      m_Items: []
+  - m_Id: 208732410814464
+    m_Localized: Select language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308269716545536
+    m_Localized: Select a scenario
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308440588296192
+    m_Localized: Scenario #1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308525753638912
+    m_Localized: Scenario #2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308579948240896
+    m_Localized: Check (A)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308654455857152
+    m_Localized: (X) Check
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308727256391680
+    m_Localized: Ignite the match (Trigger)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308835603652608
+    m_Localized: Use the left controller thumbstick to move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 308935956570112
+    m_Localized: Use the right controller thumbstick to turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309111546912768
+    m_Localized: Press Grab or Trigger to interact with objects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309235513761792
+    m_Localized: Scenario flow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309306493968384
+    m_Localized: 1. Turn on any burner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309387959934976
+    m_Localized: 2. Ignite the match
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309461163122688
+    m_Localized: 3. Bring the match to the turned-on burner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309502565097472
+    m_Localized: 4. Take the gas analyzer and check near the burner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 309699978403840
+    m_Localized: Diagnosis completed successfully
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
