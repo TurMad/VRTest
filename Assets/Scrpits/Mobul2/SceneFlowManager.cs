@@ -1,15 +1,23 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SceneFlowManager : MonoBehaviour
 {
     public static SceneFlowManager Instance { get; private set; }
 
-    [Header("XR Lock")]
-    [SerializeField] private Behaviour[] disableComponents;
-    [SerializeField] private GameObject[] hideObjects;
+    [Header("Full XR Lock")]
+    [SerializeField] private Behaviour[] fullLockDisableComponents;
+    [SerializeField] private GameObject[] fullLockHideObjects;
+
+    [Header("Move / Turn Lock")]
+    [SerializeField] private Behaviour[] moveTurnDisableComponents;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
+
+    [Header("Fade")]
+    [SerializeField] private Volume fadeVolume;
 
     public bool IsAudioPlaying => audioSource != null && audioSource.isPlaying;
 
@@ -37,25 +45,37 @@ public class SceneFlowManager : MonoBehaviour
 
     public void SetXRLocked(bool locked)
     {
-        for (int i = 0; i < disableComponents.Length; i++)
+        for (int i = 0; i < fullLockDisableComponents.Length; i++)
         {
-            if (disableComponents[i] != null)
-                disableComponents[i].enabled = !locked;
+            if (fullLockDisableComponents[i] != null)
+                fullLockDisableComponents[i].enabled = !locked;
         }
 
-        for (int i = 0; i < hideObjects.Length; i++)
+        for (int i = 0; i < fullLockHideObjects.Length; i++)
         {
-            if (hideObjects[i] != null)
-                hideObjects[i].SetActive(!locked);
+            if (fullLockHideObjects[i] != null)
+                fullLockHideObjects[i].SetActive(!locked);
         }
     }
 
-    public void PlayAudio(AudioClip clip)
+    public void SetMoveTurnLocked(bool locked)
     {
-        if (audioSource == null || clip == null) return;
+        for (int i = 0; i < moveTurnDisableComponents.Length; i++)
+        {
+            if (moveTurnDisableComponents[i] != null)
+                moveTurnDisableComponents[i].enabled = !locked;
+        }
+    }
+
+    public void PlayAudio(AudioClip clip, float volume = 1f)
+    {
+        if (audioSource == null || clip == null)
+            return;
 
         audioSource.Stop();
+        audioSource.loop = false;
         audioSource.clip = clip;
+        audioSource.volume = volume;
         audioSource.Play();
     }
 
@@ -65,6 +85,22 @@ public class SceneFlowManager : MonoBehaviour
             audioSource.Stop();
     }
 
+    public IEnumerator WaitForAudioFinished()
+    {
+        while (audioSource != null && audioSource.isPlaying)
+            yield return null;
+    }
+
+    public IEnumerator FadeToBlack(float duration)
+    {
+        yield return FadeVolume(0f, 1f, duration);
+    }
+
+    public IEnumerator FadeFromBlack(float duration)
+    {
+        yield return FadeVolume(1f, 0f, duration);
+    }
+
     public void SetObjectsActive(GameObject[] objects, bool value)
     {
         for (int i = 0; i < objects.Length; i++)
@@ -72,5 +108,24 @@ public class SceneFlowManager : MonoBehaviour
             if (objects[i] != null)
                 objects[i].SetActive(value);
         }
+    }
+
+    private IEnumerator FadeVolume(float from, float to, float duration)
+    {
+        if (fadeVolume == null)
+            yield break;
+
+        float time = 0f;
+        fadeVolume.weight = from;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = duration <= 0f ? 1f : Mathf.Clamp01(time / duration);
+            fadeVolume.weight = Mathf.Lerp(from, to, t);
+            yield return null;
+        }
+
+        fadeVolume.weight = to;
     }
 }

@@ -31,6 +31,7 @@ public class SceneIntroController : MonoBehaviour
     private IEnumerator IntroRoutine()
     {
         SceneFlowManager.Instance.SetXRLocked(true);
+        SceneFlowManager.Instance.SetMoveTurnLocked(true);
 
         paperGroup.alpha = 0f;
         textGroup.alpha = 0f;
@@ -52,6 +53,8 @@ public class SceneIntroController : MonoBehaviour
         yield return FadeCanvasGroup(paperGroup, paperGroup.alpha, 0f, hideDuration);
 
         SceneFlowManager.Instance.SetObjectsActive(activateAfterIntro, true);
+
+        SceneFlowManager.Instance.SetMoveTurnLocked(false);
         SceneFlowManager.Instance.SetXRLocked(false);
     }
 
@@ -74,7 +77,7 @@ public class SceneIntroController : MonoBehaviour
         while (time < duration)
         {
             time += Time.deltaTime;
-            float t = duration <= 0f ? 1f : time / duration;
+            float t = duration <= 0f ? 1f : Mathf.Clamp01(time / duration);
             group.alpha = Mathf.Lerp(from, to, t);
             yield return null;
         }
