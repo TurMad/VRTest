@@ -1132,6 +1132,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8308337422861335808, guid: cab32f38b38b9e1499ae2447b88056b5, type: 3}
+      propertyPath: weight
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3492,7 +3496,7 @@ MonoBehaviour:
   - {fileID: 1858724206}
   - {fileID: 1858724205}
   audioSource: {fileID: 869149472}
-  fadeVolume: {fileID: 0}
+  fadeVolume: {fileID: 993342326}
 --- !u!4 &869149471
 Transform:
   m_ObjectHideFlags: 0
@@ -3618,8 +3622,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Module1IntroController
   introVoiceClip: {fileID: 8300000, guid: 18cbdd37195f3bc4cbd1a59b15e24cb9, type: 3}
-  audioStartDelay: 2
-  fadeFromBlackDuration: 3
+  audioStartDelay: 5
+  fadeFromBlackDuration: 5
   interactablesToEnable: []
   highlightsToStart:
   - {fileID: 537293545}
@@ -3653,8 +3657,9 @@ MonoBehaviour:
   - {fileID: 3892000830021894242}
   xrOrigin: {fileID: 1872868435}
   nextViewPoint: {fileID: 1637092906}
-  fadeToBlackDuration: 0.25
-  fadeFromBlackDuration: 0.25
+  delayBeforeTransition: 3
+  fadeToBlackDuration: 3
+  fadeFromBlackDuration: 3
   unlockAfterTransition: 0
 --- !u!1001 &876544899
 PrefabInstance:
@@ -3713,6 +3718,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97aac9e8e3863e44587750a11de445e2, type: 3}
+--- !u!114 &993342326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8308337422861335808, guid: cab32f38b38b9e1499ae2447b88056b5, type: 3}
+  m_PrefabInstance: {fileID: 166338617}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1028603051
 GameObject:
   m_ObjectHideFlags: 0
@@ -4678,13 +4694,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1637092905}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.36084056, z: -0, w: 0.93262756}
-  m_LocalPosition: {x: -2.115, y: 0.447, z: -2.875}
+  m_LocalRotation: {x: -0, y: -0.7991817, z: -0, w: 0.6010895}
+  m_LocalPosition: {x: 2.753, y: 0, z: 2.429}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -42.304, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -106.104, z: 0}
 --- !u!1001 &1743647936
 PrefabInstance:
   m_ObjectHideFlags: 0

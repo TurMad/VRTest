@@ -15,6 +15,7 @@ public class Module1GrabItem : MonoBehaviour
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
     private bool wasInteracted;
     private bool audioPlayed;
+    private bool specialAudioActive;
 
     private Vector3 startPosition;
     private Quaternion startRotation;
@@ -22,6 +23,7 @@ public class Module1GrabItem : MonoBehaviour
 
     public UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable GrabInteractable => grabInteractable;
     public bool WasInteracted => wasInteracted;
+    public bool IsGrabbed => grabInteractable != null && grabInteractable.isSelected;
 
     private void Awake()
     {
@@ -79,8 +81,33 @@ public class Module1GrabItem : MonoBehaviour
 
     private void OnReleased(SelectExitEventArgs args)
     {
-        SceneFlowManager.Instance.SetMoveTurnLocked(false);
+        if (!specialAudioActive)
+        {
+            if (manager == null || !manager.HasAnyGrabbedItems())
+                SceneFlowManager.Instance.SetMoveTurnLocked(false);
 
+            StartReturn();
+        }
+    }
+
+    public void SetSpecialAudioState(bool active)
+    {
+        specialAudioActive = active;
+
+        if (!specialAudioActive)
+        {
+            if (!IsGrabbed)
+            {
+                if (manager == null || !manager.HasAnyGrabbedItems())
+                    SceneFlowManager.Instance.SetMoveTurnLocked(false);
+
+                StartReturn();
+            }
+        }
+    }
+
+    private void StartReturn()
+    {
         if (returnRoutine != null)
             StopCoroutine(returnRoutine);
 

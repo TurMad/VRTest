@@ -11,6 +11,7 @@ public class Module1InteractionManager : MonoBehaviour
     [Header("Transition")]
     [SerializeField] private XROrigin xrOrigin;
     [SerializeField] private Transform nextViewPoint;
+    [SerializeField] private float delayBeforeTransition = 1.2f;
     [SerializeField] private float fadeToBlackDuration = 0.25f;
     [SerializeField] private float fadeFromBlackDuration = 0.25f;
     [SerializeField] private bool unlockAfterTransition = false;
@@ -19,6 +20,18 @@ public class Module1InteractionManager : MonoBehaviour
     private bool specialAudioPlaying;
     private bool transitionStarted;
     private bool pendingTransition;
+    private Coroutine waitTransitionRoutine;
+
+    public bool HasAnyGrabbedItems()
+    {
+        for (int i = 0; i < allItems.Length; i++)
+        {
+            if (allItems[i] != null && allItems[i].IsGrabbed)
+                return true;
+        }
+
+        return false;
+    }
 
     public void NotifyItemInteracted(Module1GrabItem item)
     {
@@ -27,13 +40,8 @@ public class Module1InteractionManager : MonoBehaviour
         if (interactedCount < allItems.Length)
             return;
 
-        if (transitionStarted)
-            return;
-
-        if (specialAudioPlaying)
-            pendingTransition = true;
-        else
-            StartCoroutine(TransitionRoutine());
+        pendingTransition = true;
+        TryStartPendingTransition();
     }
 
     public void PlaySpecialItemAudio(Module1GrabItem sourceItem, AudioClip clip)
@@ -48,7 +56,8 @@ public class Module1InteractionManager : MonoBehaviour
     {
         specialAudioPlaying = true;
 
-        SceneFlowManager.Instance.SetMoveTurnLocked(true);
+        if (sourceItem != null)
+            sourceItem.SetSpecialAudioState(true);
 
         SetAllGrabInteractablesEnabled(false, sourceItem);
 
@@ -57,12 +66,50 @@ public class Module1InteractionManager : MonoBehaviour
 
         SetAllGrabInteractablesEnabled(true, null);
 
-        SceneFlowManager.Instance.SetMoveTurnLocked(false);
+        if (sourceItem != null)
+            sourceItem.SetSpecialAudioState(false);
 
         specialAudioPlaying = false;
 
-        if (pendingTransition && !transitionStarted)
-            StartCoroutine(TransitionRoutine());
+        TryStartPendingTransition();
+    }
+
+    private void TryStartPendingTransition()
+    {
+        if (!pendingTransition)
+            return;
+
+        if (transitionStarted)
+            return;
+
+        if (specialAudioPlaying)
+            return;
+
+        if (waitTransitionRoutine != null)
+            return;
+
+        waitTransitionRoutine = StartCoroutine(WaitBeforeTransitionRoutine());
+    }
+
+    private IEnumerator WaitBeforeTransitionRoutine()
+    {
+        float timer = 0f;
+
+        while (timer < delayBeforeTransition)
+        {
+            if (specialAudioPlaying || HasAnyGrabbedItems())
+            {
+                timer = 0f;
+                yield return null;
+                continue;
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        waitTransitionRoutine = null;
+        yield return StartCoroutine(TransitionRoutine());
     }
 
     private IEnumerator TransitionRoutine()
